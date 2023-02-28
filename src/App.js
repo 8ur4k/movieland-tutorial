@@ -13,7 +13,6 @@ const App = () => {
     const response = await fetch(`${process.env.REACT_APP_API_URL}&s=${title}`);
     const data = await response.json();
     setMovies(data.Search);
-    console.log(movies);
   };
 
   const handleKeyPress = (event) => {
