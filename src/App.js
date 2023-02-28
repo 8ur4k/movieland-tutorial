@@ -5,15 +5,6 @@ import MovieCard from "./MovieCard";
 import "./App.css";
 import SearchIcon from "./search.svg";
 
-const movie1 = {
-  Title: "Lucy",
-  Year: "2014",
-  imdbID: "tt2872732",
-  Type: "movie",
-  Poster:
-    "https://m.media-amazon.com/images/M/MV5BODcxMzY3ODY1NF5BMl5BanBnXkFtZTgwNzg1NDY4MTE@._V1_SX300.jpg",
-};
-
 const App = () => {
   const [movies, setMovies] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -25,9 +16,14 @@ const App = () => {
     console.log(movies);
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      searchMovies(searchTerm);
+    }
+  };
+
   useEffect(() => {
-    console.log("Effect");
-    searchMovies("lucy");
+    searchMovies("batman");
   }, []);
 
   return (
@@ -37,9 +33,8 @@ const App = () => {
         <input
           placeholder="Search for movies"
           value={searchTerm}
-          onChange={(e) => {
-            setSearchTerm(e.target.value);
-          }}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          onKeyDown={handleKeyPress}
         />
         <img
           src={SearchIcon}
