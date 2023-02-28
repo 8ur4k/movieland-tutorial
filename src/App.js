@@ -1,18 +1,65 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
+import MovieCard from "./MovieCard";
+
+import "./App.css";
+import SearchIcon from "./search.svg";
+
+const movie1 = {
+  Title: "Lucy",
+  Year: "2014",
+  imdbID: "tt2872732",
+  Type: "movie",
+  Poster:
+    "https://m.media-amazon.com/images/M/MV5BODcxMzY3ODY1NF5BMl5BanBnXkFtZTgwNzg1NDY4MTE@._V1_SX300.jpg",
+};
 
 const App = () => {
+  const [movies, setMovies] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+
   const searchMovies = async (title) => {
     const response = await fetch(`${process.env.REACT_APP_API_URL}&s=${title}`);
     const data = await response.json();
-
-    console.log(data);
+    setMovies(data.Search);
+    console.log(movies);
   };
 
   useEffect(() => {
-    searchMovies("Batman");
+    console.log("Effect");
+    searchMovies("lucy");
   }, []);
 
-  return <h1>APP</h1>;
+  return (
+    <div className="app">
+      <h1>MovieLand</h1>
+      <div className="search">
+        <input
+          placeholder="Search for movies"
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+          }}
+        />
+        <img
+          src={SearchIcon}
+          alt="search"
+          onClick={() => searchMovies(searchTerm)}
+        />
+      </div>
+      {movies?.length > 0 ? (
+        <div className="container">
+          {movies.map((movie) => (
+            <MovieCard movie={movie} />
+          ))}
+        </div>
+      ) : (
+        <div className="empty">
+          <h2>No movies found</h2>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default App;
